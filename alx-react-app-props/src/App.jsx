@@ -1,5 +1,6 @@
 import React from "react";
 import UserProfile from "./components/UserProfile";
+import UserContext from "./UserContext";
 
 function App() {
   const userData = {
@@ -8,10 +9,12 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h1>Welcome to the User App</h1>
-      <UserProfile userData={userData} />
-    </div>
+    <UserContext.Provider value={userData}>
+      <div>
+        <h1>Welcome to the User App</h1>
+        <UserProfile />
+      </div>
+    </UserContext.Provider>
   );
 }
 
