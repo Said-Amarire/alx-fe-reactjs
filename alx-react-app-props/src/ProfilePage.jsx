@@ -1,4 +1,5 @@
 import UserInfo from './UserInfo';
+
 function ProfilePage() {
   return (
     <div>
@@ -7,4 +8,5 @@ function ProfilePage() {
     </div>
   );
 }
+
 export default ProfilePage;
