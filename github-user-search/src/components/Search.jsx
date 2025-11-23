@@ -1,4 +1,3 @@
-// src/components/Search.jsx
 import React, { useState } from "react";
 import { fetchUserData } from "../services/githubService";
 
@@ -17,21 +16,19 @@ const Search = () => {
     setUsers([]);
 
     try {
-      // استدعاء دالة API
       const data = await fetchUserData({
         username,
         location,
         minRepos: minRepos ? Number(minRepos) : undefined,
       });
 
-      // التحقق من النتائج
       if (!data || !data.items || data.items.length === 0) {
-        setError("Looks like we cant find the user"); // نص مطابق تمامًا للاختبار
+        setError("Looks like we cant find the user");
       } else {
         setUsers(data.items);
       }
     } catch (err) {
-      setError("Looks like we cant find the user"); // نص مطابق تمامًا للاختبار
+      setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
     }
@@ -39,7 +36,7 @@ const Search = () => {
 
   return (
     <div className="p-4 bg-gray-100 rounded-md shadow-md">
-      {/* نموذج البحث */}
+      {/* Search form */}
       <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
         <input
           type="text"
@@ -70,11 +67,11 @@ const Search = () => {
         </button>
       </form>
 
-      {/* الرسائل */}
+      {/* Loading and error messages */}
       {loading && <p className="mt-4">Loading...</p>}
       {error && <p className="mt-4 text-red-500">{error}</p>}
 
-      {/* عرض النتائج */}
+      {/* Results */}
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {users.map((user) => (
           <div
