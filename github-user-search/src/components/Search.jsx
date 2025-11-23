@@ -1,10 +1,10 @@
 // src/components/Search.jsx
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { searchUsers } from "../services/githubService";
 
 const Search = () => {
-  const [username, setUsername] = useState("");
-  const [userData, setUserData] = useState(null);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -12,14 +12,14 @@ const Search = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    setUserData(null);
+    setResults([]);
 
     try {
-      const data = await fetchUserData(username);
-      if (!data) {
-        setError("Looks like we cant find the user");
+      const data = await searchUsers(query); // جلب قائمة المستخدمين
+      if (data && data.items.length > 0) {
+        setResults(data.items);
       } else {
-        setUserData(data);
+        setError("Looks like we cant find the user");
       }
     } catch (err) {
       setError("Looks like we cant find the user");
@@ -29,13 +29,13 @@ const Search = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
+    <div className="max-w-xl mx-auto p-4">
       <form onSubmit={handleSearch} className="flex mb-4">
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter GitHub username"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search GitHub users"
           className="border p-2 flex-grow"
         />
         <button
@@ -49,26 +49,31 @@ const Search = () => {
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
-      {userData && (
-        <div className="border p-4 rounded mt-4">
-          <img
-            src={userData.avatar_url}
-            alt={userData.login}
-            className="w-16 h-16 rounded-full mb-2"
-          />
-          <h2 className="font-bold text-lg">{userData.name || userData.login}</h2>
-          <p>Followers: {userData.followers}</p>
-          <p>Repositories: {userData.public_repos}</p>
-          <a
-            href={userData.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 underline"
+      <div className="space-y-4">
+        {results.map((user) => (
+          <div
+            key={user.id}
+            className="border p-4 rounded flex items-center space-x-4"
           >
-            View Profile
-          </a>
-        </div>
-      )}
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-12 h-12 rounded-full"
+            />
+            <div>
+              <h2 className="font-bold">{user.login}</h2>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
