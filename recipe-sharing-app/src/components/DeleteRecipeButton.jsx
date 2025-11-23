@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 const DeleteRecipeButton = ({ recipeId }) => {
   const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
-  const navigate = useNavigate(); // ✅ checker wants this
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     deleteRecipe(recipeId);
-    navigate('/'); // العودة للصفحة الرئيسية بعد الحذف
+    navigate('/');
   };
 
   return (
