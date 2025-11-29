@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import UserProfile from './components/UserProfile';
 
 function App() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // fetch posts from json placeholder
     fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
       .then(data => {
-        // set the first 20 posts to the state
         setPosts(data.slice(0, 20));
       })
       .catch(error => console.error('Error fetching posts:', error));
@@ -17,7 +16,12 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className='text-red-600 text-4xl'>Posts</h1>
+
+      {}
+      <UserProfile />
+
+      <h1 className='text-red-600 text-4xl mt-10'>Posts</h1>
+
       <ul className="posts">
         {posts.map((post, idx) => (
           <li key={post.id} className="post">
