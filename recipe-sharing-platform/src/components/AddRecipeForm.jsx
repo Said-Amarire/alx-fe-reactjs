@@ -3,21 +3,31 @@ import React, { useState } from "react";
 function AddRecipeForm() {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [steps, setSteps] = useState(""); // steps field
+  const [steps, setSteps] = useState("");
+  const [errors, setErrors] = useState({}); // errors state
+
+  // Validation function
+  const validate = () => {
+    const newErrors = {};
+    if (!title.trim()) newErrors.title = "Title is required";
+    if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required";
+    if (!steps.trim()) newErrors.steps = "Steps are required";
+    return newErrors;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simple validation
-    if (!title || !ingredients || !steps) {
-      alert("Please fill in all fields.");
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
     const newRecipe = {
       title,
       ingredients: ingredients.split(",").map(item => item.trim()),
-      steps: steps.split("\n").map(item => item.trim()), // split steps by new line
+      steps: steps.split("\n").map(item => item.trim()),
     };
 
     console.log("New Recipe:", newRecipe);
@@ -26,6 +36,7 @@ function AddRecipeForm() {
     setTitle("");
     setIngredients("");
     setSteps("");
+    setErrors({});
   };
 
   return (
@@ -44,6 +55,9 @@ function AddRecipeForm() {
           className="w-full p-2 border rounded"
           placeholder="Recipe title"
         />
+        {errors.title && (
+          <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+        )}
       </div>
 
       <div className="mb-4">
@@ -54,6 +68,9 @@ function AddRecipeForm() {
           className="w-full p-2 border rounded"
           placeholder="e.g., flour, sugar, eggs"
         ></textarea>
+        {errors.ingredients && (
+          <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>
+        )}
       </div>
 
       <div className="mb-4">
@@ -64,6 +81,9 @@ function AddRecipeForm() {
           className="w-full p-2 border rounded"
           placeholder="Write each step on a new line"
         ></textarea>
+        {errors.steps && (
+          <p className="text-red-500 text-sm mt-1">{errors.steps}</p>
+        )}
       </div>
 
       <button
