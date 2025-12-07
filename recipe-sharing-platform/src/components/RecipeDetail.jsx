@@ -1,30 +1,36 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import data from "../data.json";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-const RecipeDetail = () => {
+function RecipeDetail() {
   const { id } = useParams();
-  const recipe = data.find((r) => r.id === parseInt(id));
+  const [recipe, setRecipe] = useState(null);
 
-  if (!recipe) return <p>Recipe not found</p>;
+  useEffect(() => {
+    fetch("/src/data.json")
+      .then(res => res.json())
+      .then(data => {
+        const found = data.find(item => item.id === parseInt(id));
+        setRecipe(found);
+      })
+      .catch(err => console.log(err));
+  }, [id]);
+
+  if (!recipe) return <p className="text-center mt-10">Loading recipe...</p>;
 
   return (
-    <div className="container mx-auto p-4">
-      <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">
-        &larr; Back to Home
-      </Link>
+    <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
-      <img src={recipe.image} alt={recipe.title} className="w-full h-64 object-cover mb-4 rounded"/>
+      <img src={recipe.image} alt={recipe.title} className="w-full h-64 object-cover rounded mb-4" />
+      <h2 className="text-xl font-semibold mb-2">Summary</h2>
       <p className="mb-4">{recipe.summary}</p>
-      <h2 className="text-2xl font-semibold mb-2">Ingredients:</h2>
+      <h2 className="text-xl font-semibold mb-2">Ingredients</h2>
       <ul className="list-disc list-inside mb-4">
-        <li>Example ingredient 1</li>
-        <li>Example ingredient 2</li>
+        {recipe.ingredients.map((ing, idx) => <li key={idx}>{ing}</li>)}
       </ul>
-      <h2 className="text-2xl font-semibold mb-2">Instructions:</h2>
-      <p>Example cooking instructions...</p>
+      <h2 className="text-xl font-semibold mb-2">Instructions</h2>
+      <p>{recipe.instructions}</p>
     </div>
   );
-};
+}
 
 export default RecipeDetail;
