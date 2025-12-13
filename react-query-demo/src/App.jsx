@@ -1,13 +1,12 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
-import PostsComponent from './components/PostsComponent';
-
-const queryClient = new QueryClient();
+import React from "react";
+import PostsComponent from "./components/PostsComponent";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <div>
+      <h1>React Query Demo</h1>
       <PostsComponent />
-    </QueryClientProvider>
+    </div>
   );
 }
 
