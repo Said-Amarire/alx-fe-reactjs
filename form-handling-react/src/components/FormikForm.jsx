@@ -1,3 +1,4 @@
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -12,20 +13,29 @@ function FormikForm() {
       })}
       onSubmit={(values) => {
         console.log("Formik form submitted:", values);
+        alert("Form submitted!");
       }}
     >
-      <Form>
-        <Field name="username" placeholder="Username" />
-        <ErrorMessage name="username" component="div" />
+      {() => (
+        <Form>
+          <div>
+            <Field name="username" placeholder="Username" />
+            <ErrorMessage name="username" component="div" style={{ color: "red" }} />
+          </div>
 
-        <Field name="email" type="email" placeholder="Email" />
-        <ErrorMessage name="email" component="div" />
+          <div>
+            <Field name="email" type="email" placeholder="Email" />
+            <ErrorMessage name="email" component="div" style={{ color: "red" }} />
+          </div>
 
-        <Field name="password" type="password" placeholder="Password" />
-        <ErrorMessage name="password" component="div" />
+          <div>
+            <Field name="password" type="password" placeholder="Password" />
+            <ErrorMessage name="password" component="div" style={{ color: "red" }} />
+          </div>
 
-        <button type="submit">Register</button>
-      </Form>
+          <button type="submit">Register</button>
+        </Form>
+      )}
     </Formik>
   );
 }
