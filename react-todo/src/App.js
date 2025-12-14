@@ -1,8 +1,13 @@
-import React from "react";
-import TodoList from "./components/TodoList";
+import './App.css';
+import TodoList from './TodoList';
 
 function App() {
-  return <TodoList />;
+  return (
+    <div className="App">
+      <h1>React Todo List</h1>
+      <TodoList />
+    </div>
+  );
 }
 
 export default App;
