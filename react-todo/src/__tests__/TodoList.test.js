@@ -36,7 +36,6 @@ describe("TodoList Component", () => {
   test("deletes a todo", () => {
     render(<TodoList />);
 
-    // target the li containing "Write Tests"
     const todoItem = screen.getByText("Write Tests").closest("li");
     const deleteButton = within(todoItem).getByText("Delete");
 
